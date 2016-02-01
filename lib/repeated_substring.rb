@@ -14,14 +14,28 @@ class RepeatedSubstring
         enumerate_combinations(string, i)
     end.flatten
 
+    min_length = 2
     all_substrings.each do |substring|
-        if substring.length > 1
+        if substring.length >= min_length
             repeated_substrings[substring] += 1
         end
     end
 
-    max_count = repeated_substrings.values.max
-    repeated_substrings.find { |k, v| v == max_count }.first
+    # a repeated substring can only be a subset of the entire string
+    max_length = string.length - 1
+    find_longest_repeated_substring(repeated_substrings, max_length)
+  end
+
+  def find_longest_repeated_substring(repeated_substrings, max_length)
+    longest_length = max_length.step(0, -1).find do |l|
+        of_length = repeated_substrings.select { |k, v| k.length == l }
+        max_count = of_length.values.max
+        !max_count.nil? && max_count > 1
+    end
+
+    longest_string_set = repeated_substrings.select { |k, v| k.length == longest_length }
+    max_count = longest_string_set.values.max
+    longest_string_set.find { |k, v| v == max_count }.first
   end
 
   def find_repeated_substring_file(file_path)
