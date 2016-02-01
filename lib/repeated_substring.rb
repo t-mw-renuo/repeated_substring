@@ -35,7 +35,8 @@ class RepeatedSubstring
 
     longest_string_set = repeated_substrings.select { |k, v| k.length == longest_length }
     max_count = longest_string_set.values.max
-    longest_string_set.find { |k, v| v == max_count }.first
+    longest_strings = longest_string_set.find { |k, v| v == max_count }
+    return longest_strings.first if !longest_strings.nil? else 'NONE'
   end
 
   def find_repeated_substring_file(file_path)
